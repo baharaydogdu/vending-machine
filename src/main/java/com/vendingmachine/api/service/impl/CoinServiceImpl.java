@@ -61,14 +61,12 @@ public class CoinServiceImpl implements CoinService {
     @Override
     public List<Coin> refundCoins() {
         AtomicInteger refund = new AtomicInteger(machineService.getCurrentBalance());
-    
-        Coin refundableCoin = searchRefundableCoin(refund);
-        refundCoins.add(refundableCoin);
+        refundCoins.clear();
         
-        while (getTotalRefundableAmount() < refund.get()) {
-            refund.set(refund.get() - Integer.parseInt(refundableCoin.getName()) * refundableCoin.getQuantity());
-            refundableCoin = searchRefundableCoin(refund);
+        while (refund.get() != 0) {
+            Coin refundableCoin = searchRefundableCoin(refund);
             refundCoins.add(refundableCoin);
+            refund.set(refund.get() - Integer.parseInt(refundableCoin.getName()) * refundableCoin.getQuantity());
         }
     
         refundCoins.forEach(refundCoin -> {
@@ -85,23 +83,16 @@ public class CoinServiceImpl implements CoinService {
         AtomicReference<Coin> coin = new AtomicReference<>();
         AtomicInteger quantity = new AtomicInteger(201);
         Arrays.stream(CoinType.values())
-            .forEach(type -> {
-                this.coinRepository.findAll().forEach(repoCoin -> {
-                    if (type.getName().equals(repoCoin.getName()) && repoCoin.getQuantity() > 0 && Integer.parseInt(repoCoin.getName()) <= refund.get()) {
-                        double division = Math.floor(refund.get() / Integer.parseInt(repoCoin.getName()));
-                        if(division >= 1 && division < quantity.get()) {
-                            quantity.set((int) division);
-                            coin.set(new Coin(type.getName(), (int) division));
-                        }
+            .forEach(type -> this.coinRepository.findAll().forEach(repoCoin -> {
+                if (type.getName().equals(repoCoin.getName()) && repoCoin.getQuantity() > 0 && Integer.parseInt(repoCoin.getName()) <= refund.get()) {
+                    double division = Math.floor(refund.get() / Integer.parseInt(repoCoin.getName()));
+                    if(division >= 1 && division < quantity.get()) {
+                        quantity.set((int) division);
+                        coin.set(new Coin(type.getName(), (int) division));
                     }
-                });
-            });
+                }
+            }));
         return coin.get();
-    }
-    
-    private int getTotalRefundableAmount() {
-        return refundCoins.stream().mapToInt(coin -> Integer.parseInt(coin.getName()) * coin.getQuantity())
-            .sum();
     }
     
     @Override
