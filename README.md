@@ -130,7 +130,7 @@ Option menu:
 localhost:8080/products  
 ```
 ```
-localhost:8080/product/buy/{id}
+localhost:8080/products/buy/{id}
 ````
 ```
 localhost:8080/coins/insert/{value}
