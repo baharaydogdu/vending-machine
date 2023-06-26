@@ -119,7 +119,7 @@ Option menu:
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/3b7ff31e-e73d-4e46-a735-969611799d25)
 
 7. Exit
-   
+
    Shutdowns the machine.
 
 ### REST API
@@ -141,5 +141,3 @@ localhost:8080/coins/refund
 ```
 localhost:8080/machine/currentBalance
 ````
-
-
