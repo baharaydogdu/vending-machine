@@ -83,36 +83,43 @@ Option menu:
 ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/a7e7ad45-3197-4705-88ef-8c0ced06ba79)
 
 1. List Available Products
+   
    Lists all products including their price and quantity within the machine.
    
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/da19ca30-796c-4c76-ae91-935c93ccc12a)
 
 2. List Machine Coins
+   
    Lists all coins including their quantities within the machine.
    
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/e4eef60c-f71a-481e-bf10-7ff6d2f8a604)
 
 3. Check Current Balance
+   
    Returns current balance of the user.
    
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/0eab4942-3c42-4d3a-a818-267850b465a6)
 
 4. Insert Coin
+   
    Inserts given coin into the machine and save it for the current balance of user.
 
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/dc7abe64-4ddf-40fc-b19e-1ad192873e02)
 
 5. Buy Product
+    
    Buys given product if user has enough credit and machine has that product. After purchase, the current balance of user and product quantity within the machine are updated.
 
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/5af70ca6-9b24-441d-b552-0f14cb3168b4)
 
 6. Refund
+    
    Refunds as coins which are available within the machine.
 
    ![image](https://github.com/baharaydogdu/vending-machine/assets/47500612/3b7ff31e-e73d-4e46-a735-969611799d25)
 
 7. Exit
+   
    Shutdowns the machine.
 
 ### REST API
