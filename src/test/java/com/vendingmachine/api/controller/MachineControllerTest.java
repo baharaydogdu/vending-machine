@@ -32,7 +32,7 @@ public class MachineControllerTest {
     public void shouldReturnStatusOkWhenGettingCurrentBalance() {
         when(machineService.getCurrentBalance()).thenReturn(0);
         
-        ResponseEntity<Machine> response = sut.getCurrentBalance();
+        ResponseEntity<Object> response = sut.getCurrentBalance();
         
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
     }

@@ -1,10 +1,13 @@
 package com.vendingmachine.api.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.vendingmachine.api.entity.Machine;
 import com.vendingmachine.api.entity.Product;
 import com.vendingmachine.api.exception.VendingMachineException;
-import com.vendingmachine.api.exception.VendingMachineExceptionHandler;
+import com.vendingmachine.api.response.ResponseHandler;
+import com.vendingmachine.api.response.ResponseMessage;
 import com.vendingmachine.api.service.ProductService;
+import com.vendingmachine.api.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +29,9 @@ public class ProductController {
     }
     
     @GetMapping (path="/products", produces = "application/json")
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<Object> getProducts() {
         List<Product> products = productService.getAvailableProducts();
-        return ResponseEntity.status(HttpStatus.OK).body(products);
+        return ResponseHandler.generateSuccessResponse(ResponseMessage.PRODUCT_LIST_RETURNED_SUCCESSFULLY.getMessage(), HttpStatus.OK, products);
     
     }
     
@@ -37,10 +40,11 @@ public class ProductController {
     public ResponseEntity<Object> buyProductById(@PathVariable ("id") @Validated final String id) {
         try {
             int currentBalance = productService.buyProductById(id);
-            return ResponseEntity.ok(new Machine(currentBalance));
+            JsonNode responseData = JsonUtil.convertObjectWithoutField(new Machine(currentBalance), "id");
+            return ResponseHandler.generateSuccessResponse(ResponseMessage.PRODUCT_BOUGHT_SUCCESSFULLY.getMessage(), HttpStatus.OK, responseData);
         }
         catch (VendingMachineException e) {
-            return VendingMachineExceptionHandler.buildResponseEntity(HttpStatus.FORBIDDEN, e.getMessage());
+            return ResponseHandler.generateErrorResponse(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 

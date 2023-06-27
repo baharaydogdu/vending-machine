@@ -37,7 +37,7 @@ public class ProductControllerTest {
         List<Product> products = TestUtil.createProducts();
         when(productService.getAvailableProducts()).thenReturn(products);
         
-        ResponseEntity<List<Product>> response = sut.getProducts();
+        ResponseEntity<Object> response = sut.getProducts();
         
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
