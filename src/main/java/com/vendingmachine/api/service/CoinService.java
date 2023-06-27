@@ -1,6 +1,7 @@
 package com.vendingmachine.api.service;
 
 import com.vendingmachine.api.entity.Coin;
+import com.vendingmachine.api.exception.RefundNotAvailableException;
 import com.vendingmachine.api.exception.VendingMachineException;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface CoinService {
     
     void addCoins(List<Coin> coins);
     
-    List<Coin> refundCoins();
+    List<Coin> refundCoins() throws VendingMachineException;
     
     List<Coin> getMachineCoins();
 }

@@ -3,6 +3,7 @@ package com.vendingmachine.api.service.impl;
 import com.vendingmachine.api.entity.Coin;
 import com.vendingmachine.api.entity.model.CoinType;
 import com.vendingmachine.api.exception.CoinNotValidException;
+import com.vendingmachine.api.exception.RefundNotAvailableException;
 import com.vendingmachine.api.exception.VendingMachineException;
 import com.vendingmachine.api.repository.CoinRepository;
 import com.vendingmachine.api.service.CoinService;
@@ -59,10 +60,13 @@ public class CoinServiceImpl implements CoinService {
     }
     
     @Override
-    public List<Coin> refundCoins() {
+    public List<Coin> refundCoins() throws VendingMachineException {
         AtomicInteger refund = new AtomicInteger(machineService.getCurrentBalance());
-        refundCoins.clear();
+        if(refund.get() == 0) {
+            throw new RefundNotAvailableException("There is no balance to be refunded.");
+        }
         
+        refundCoins.clear();
         while (refund.get() != 0) {
             Coin refundableCoin = searchRefundableCoin(refund);
             refundCoins.add(refundableCoin);

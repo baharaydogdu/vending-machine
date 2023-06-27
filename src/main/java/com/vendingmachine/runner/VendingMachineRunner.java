@@ -1,5 +1,6 @@
 package com.vendingmachine.runner;
 
+import com.vendingmachine.api.entity.Coin;
 import com.vendingmachine.api.exception.VendingMachineException;
 import com.vendingmachine.api.service.CoinService;
 import com.vendingmachine.api.service.MachineService;
@@ -9,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -59,13 +61,27 @@ public class VendingMachineRunner implements ApplicationRunner {
             buyProductById(productId);
             optionMenu(enter);
         case "6":
-            System.out.println("Below coins are refunded:");
-            System.out.println(coinService.refundCoins());
+            refundCoins();
             optionMenu(enter);
         case "7":
             System.out.println("CHEERS..");
             System.exit(0);
+        default:
+            System.out.println("Please enter a valid operation.");
+            optionMenu(enter);
         }
+    }
+    
+    private void refundCoins() {
+        String message;
+        try {
+            List<Coin> coins = coinService.refundCoins();
+            message = String.format("Coin(s) are refunded successfully. Refunded coins:\n<%s>", coins);
+        }
+        catch (VendingMachineException e) {
+            message = String.format("Refund could not be processed. Error message: <%s>", e.getMessage());
+        }
+        System.out.println(message);
     }
     
     private void buyProductById(String productId) {
